@@ -11,7 +11,6 @@ class PekerjaanController extends Controller
     public function index(Request $request) {
         $keyword = $request->get('keyword');
 
-        // Mengambil data dengan hitung jumlah pegawai & pagination
         $data = Pekerjaan::withCount('pegawai') 
             ->when($keyword, function ($query) use ($keyword) {
                 $query->where('nama', 'like', "%{$keyword}%")
@@ -29,8 +28,11 @@ class PekerjaanController extends Controller
 
     public function store(Request $request) {
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|string',
+            'nama'      => 'required|string',
             'deskripsi' => 'required|string',
+            'captcha'   => 'required|captcha' // Tambahan Validasi Captcha
+        ], [
+            'captcha.captcha' => 'Kode keamanan (Captcha) salah, silakan coba lagi.'
         ]);
 
         // Validasi Gagal
@@ -41,10 +43,8 @@ class PekerjaanController extends Controller
         $data->deskripsi = $request->deskripsi;
 
         if ($data->save()) {
-            // Sukses
             return redirect()->route('pekerjaan.index')->with('success', 'Data berhasil ditambahkan');
         } else {
-            // Gagal Simpan
             return redirect()->route('pekerjaan.index')->withErrors(['msg' => 'Terjadi kesalahan sistem, data tidak tersimpan']);
         }
     }
@@ -56,11 +56,10 @@ class PekerjaanController extends Controller
 
     public function update(Request $request) {
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|string',
+            'nama'      => 'required|string',
             'deskripsi' => 'required|string',
         ]);
 
-        // Validasi Gagal
         if ($validator->fails()) return redirect()->back()->withErrors($validator)->withInput();
 
         $data = Pekerjaan::findOrFail($request->id);
@@ -68,17 +67,14 @@ class PekerjaanController extends Controller
         $data->deskripsi = $request->deskripsi;
 
         if ($data->save()) {
-            // Sukses
             return redirect()->route('pekerjaan.index')->with('success', 'Data berhasil diupdate');
         } else {
-             // Gagal Simpan
             return redirect()->route('pekerjaan.index')->withErrors(['msg' => 'Terjadi kesalahan sistem, data tidak tersimpan']);
         }
     }
 
     public function destroy(Request $request) {
         Pekerjaan::findOrFail($request->id)->delete();
-        // Delete Sukses -> Pop-up HIJAU
         return redirect()->route('pekerjaan.index')->with('success', 'Data berhasil dihapus');
     }
 }
