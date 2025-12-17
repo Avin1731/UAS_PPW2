@@ -8,13 +8,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pegawai extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes; // Tambahkan HasFactory biar lengkap
+
     protected $table = 'pegawai';
     protected $guarded = ['id'];
 
-    public function pegawai()
+    /**
+     * Relasi ke Model Pekerjaan
+     * Pegawai "Milik" satu Pekerjaan
+     */
+    public function pekerjaan()
     {
-        return $this->hasOne(Pekerjaan::class);
-        return $this->hasMany(Pegawai::class);
+        // Pastikan di tabel pegawai ada kolom 'pekerjaan_id'
+        return $this->belongsTo(Pekerjaan::class, 'pekerjaan_id');
     }
 }

@@ -70,7 +70,7 @@
                     <a href="{{ route('pekerjaan.index') }}" class="block py-2 px-3 md:p-0 transition-transform hover:scale-120 text-[#96291F] @yield('menupekerjaan')">Pekerjaan</a>
                 </li>
                 <li>
-                    <a href="#" class="block py-2 px-3 md:p-0 transition-transform hover:scale-120 text-[#96291F] @yield('menupegawai')">Pegawai</a>
+                    <a href="{{ route('pegawai.index') }}" class="block py-2 px-3 md:p-0 transition-transform hover:scale-120 text-[#96291F] @yield('menupegawai')">Pegawai</a>
                 </li>
             </ul>
         </div>
