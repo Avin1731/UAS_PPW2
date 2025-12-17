@@ -1,11 +1,11 @@
 @extends('base')
-@section('title','Pekerjaan')
+@section('title','Edit Pekerjaan')
 @section('menupekerjaan', 'underline decoration-4 underline-offset-7')
 @section('content')
     <section class="p-4 bg-white rounded-lg min-h-[50vh]">
-        <h1 class="text-3xl font-bold text-[#C0392B] mb-6 text-center">Pekerjaan</h1>
+        <h1 class="text-3xl font-bold text-[#C0392B] mb-6 text-center">Edit Pekerjaan</h1>
         <div class="mx-auto max-w-screen-xl">
-            <form action="{{ route('pekerjaan.update', ['id' => $data->id]) }}" method="POST" class="space-y-4">
+            <form action="{{ route('pekerjaan.update', ['id' => $data->id]) }}" method="POST" class="space-y-4 save-form" autocomplete="off">
                 @csrf
                 @method('PUT')
                 <div>
@@ -14,13 +14,15 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-                    <textarea name="deskripsi" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" autocomplete="off" required>{{ $data->deskripsi }}</textarea>
+                    <textarea name="deskripsi" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" required>{{ $data->deskripsi }}</textarea>
                 </div>
                 <div class="flex justify-end gap-2">
-                    <button type="reset" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">Reset</button>
-                    <button type="submit" class="rounded-md bg-green-600 px-4 py-2 text-sm text-white hover:bg-green-700 cursor-pointer">Simpan</button>
+                    <a href="{{ route('pekerjaan.index') }}" class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer text-center">Batal</a>
+                    <button type="submit" class="rounded-md bg-green-600 px-4 py-2 text-sm text-white hover:bg-green-700 cursor-pointer">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
     </section>
+
+    @include('components.notification')
 @endsection

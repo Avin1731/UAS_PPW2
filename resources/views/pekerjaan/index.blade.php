@@ -16,6 +16,7 @@
                     </button>
                 </form>
             </div>
+
             <div class="overflow-x-auto rounded-lg border border-gray-200">
                 <table class="min-w-full divide-y divide-x divide-gray-200 text-sm">
                     <thead class="bg-gray-100">
@@ -30,16 +31,24 @@
                     <tbody class="divide-y divide-gray-100 bg-white">
                         @forelse($data as $k => $d)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-3">{{ $k+1 }}</td>
+                            <td class="px-4 py-3">{{ $data->firstItem() + $k }}</td>
+                            
                             <td class="px-4 py-3 font-medium text-gray-900">{{ $d->nama }}</td>
                             <td class="px-4 py-3 text-gray-600">{{ $d->deskripsi }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ 100 }}</td>
+                            
+                            <td class="px-4 py-3 text-gray-600">
+                                <span class="rounded bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-800">
+                                    {{ $d->pegawai_count }} Orang
+                                </span>
+                            </td>
+                            
                             <td class="px-4 py-3 text-center text-gray-600">
                                 <div class="inline-flex rounded-md shadow-sm" role="group">
                                     <a href="{{ route('pekerjaan.edit', ['id' => $d->id]) }}" class="cursor-pointer rounded-l-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-blue-600 hover:bg-blue-50">
                                         Edit
                                     </a>
-                                    <form action="{{ route('pekerjaan.destroy', ['id' => $d->id]) }}" method="POST">
+                                    
+                                    <form action="{{ route('pekerjaan.destroy', ['id' => $d->id]) }}" method="POST" class="delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="cursor-pointer rounded-r-md border border-l-0 border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50">
@@ -50,12 +59,21 @@
                             </td>
                         </tr>
                         @empty
-                        kosong
+                        <tr>
+                            <td colspan="5" class="px-4 py-3 text-center text-gray-500">Data Kosong</td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
 
+            <div class="mt-4">
+                {{ $data->links() }}
+            </div>
+
         </div>
     </section>
+
+    @include('components.notification')
+
 @endsection
